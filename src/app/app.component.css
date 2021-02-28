@@ -1,0 +1,84 @@
+/* :root {
+    --border-size: 15px;
+} */
+
+body {
+    width: 1000px;
+}
+
+div {
+    background-color: #221f20;
+    color: #fff;
+}
+
+.appContainer {
+    width: 1000px;
+}
+
+.rectangle {
+    height: 30px;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+    font-family: 'Big Shoulders Display', cursive;
+    font-size: 1.4em;
+}
+
+.rectangleBottom {
+    height: 70px; /* If song title to long then change this value. It should be removed from here and moved to component/html */
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.flexContainer {
+    display: flex;
+    width: 300px;
+}
+
+.rectangleRight {
+    margin-top: 60px;
+    padding: 8px;
+    height: 80px;
+    width: 300px;
+    font-size: .6em;
+    color: #eb1d24;
+    background-color: #fff;
+    border-top: 3px solid #eb1d24;
+    border-right: 3px solid #eb1d24;
+    border-bottom: 3px solid #eb1d24;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#songs > div {
+    background-color: #eb1d24;
+    width: 65%;
+    margin: auto;
+}
+
+.currentSong {
+    width: 300px;
+    height: 300px;
+}
+
+.previousSong {
+    margin-top: 40px;
+    margin-left: 12px;
+    width: 150px;
+    height: 150px;
+}
+
+.controlButton {
+    width: 180px;
+    height: 180px;
+    margin-top: 28px;
+    margin-left: 11px;
+}
+
+.controlsColumn {
+    background-color: #eb1d24;
+    height: 460px;
+    margin-right: 30px;
+}

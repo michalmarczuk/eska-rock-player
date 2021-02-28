@@ -1,5 +1,30 @@
 <audio id="yourAudio" preload='none' #player>
-  <source src="https://waw01-01.ic.smcdn.pl/t041-1.mp3" type='audio/wav' />
+  <!-- <source src="https://waw01-01.ic.smcdn.pl/t041-1.mp3" type='audio/wav' /> -->
+  <!-- <source src="https://uk2-play.adtonos.com/8104/eska-rock" type='audio/wav' /> -->
 </audio>
 
-<span (click)="onButtonCLick()">{{ status }}</span>
+<div class="row align-items-bottom appContainer">
+  <div class="col-3 d-flex justify-content-center controlsColumn">
+    <img class="controlButton" (click)="onButtonCLick()" src="{{ controlButtonimage }}" alt="controlButton">
+  </div>
+  <div class="col-4">
+    <div id="songs" class="text-center">
+      <div class="rectangle"></div>
+      <img class="currentSong" src="{{ songs.current.image }}" alt="currentSongImage">
+      <div class="rectangle pt-2">{{ songs.current.artist }}</div>
+      <div class="rectangleBottom pt-3">{{ songs.current.song }}</div>
+    </div>
+  </div>
+  <div class="col-3">
+    <img class="mt-3" src="/assets/images/eska_logo.png" alt="lastSongImage">
+    <div class="flexContainer">
+        <img class="previousSong" src="{{ songs.last.image }}" alt="lastSongImage">
+        <div class="rectangleRight">
+          Wcześniej grało:
+          <p></p>
+          {{ songs.last.artist }}
+          <p>{{ songs.last.song }}</p>
+        </div>
+    </div>
+  </div>
+</div>

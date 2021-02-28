@@ -1,0 +1,10 @@
+{
+  "/eska_api": {
+    "target": "https://static.eska.pl/m/playlist/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/eska_api": ""
+    }
+  }
+}
