@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start:electron": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder --publish always"
   },
   "build": {
     "appId": "eska.app",
@@ -27,8 +27,7 @@
         "provider": "github",
         "token": "a437a912d669843de0f50b485957131d11e58dd3"
       }
-    ],
-    "release": "always"
+    ]
   },
   "private": true,
   "dependencies": {
