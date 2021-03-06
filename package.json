@@ -23,7 +23,10 @@
       "buildResources": "assets"
     },
     "publish": [
-      "github"
+      {
+        "provider": "github",
+        "token": "a437a912d669843de0f50b485957131d11e58dd3"
+      }
     ]
   },
   "private": true,
