@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start:electron": "electron .",
-    "dist": "electron-builder --publish always"
+    "dist": "electron-builder --publish always",
+    "dist2": "electron-builder"
   },
   "build": {
     "appId": "eska.app",
@@ -22,10 +23,13 @@
     "directories": {
       "buildResources": "assets"
     },
+    "win": {
+      "target": ["portable"]
+    },
     "publish": [
       {
         "provider": "github",
-        "token": "a437a912d669843de0f50b485957131d11e58dd3"
+        "token": "${{ secrets.TOKEN }}"
       }
     ]
   },
