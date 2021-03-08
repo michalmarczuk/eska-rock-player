@@ -23,3 +23,5 @@ jobs:
     - run: npm i
     - run: npm i -g electron-builder
     - run: npm run build && npm run dist
+      env:
+        GH_TOKEN: ${{ secrets.TOKEN }}
