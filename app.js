@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const request = require('request');
 const expressApp = express();
+const os = require('os');
 
 // Start server
 expressApp.use(express.static(__dirname + '/dist'));
@@ -21,12 +22,13 @@ expressApp.listen(process.env.PORT || 4200);
 // Open Electron
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 955,
+        width: os.platform() === 'win32' ? 989 : 955,
         height: 489,
         webPreferences: {
             nodeIntegration: true
         },
-        resizable: false
+        resizable: false,
+        autoHideMenuBar: true
     });
 
     mainWindow.loadURL('http://localhost:4200');
