@@ -1,11 +1,14 @@
-<audio id="yourAudio" preload='none' #player>
+<audio preload='none' #player>
   <!-- <source src="https://waw01-01.ic.smcdn.pl/t041-1.mp3" type='audio/wav' /> -->
   <!-- <source src="https://uk2-play.adtonos.com/8104/eska-rock" type='audio/wav' /> -->
 </audio>
 
 <div class="row align-items-bottom appContainer">
-  <div class="col-3 d-flex justify-content-center controlsColumn">
+  <div class="col-3 justify-content-center controlsColumn">
     <img class="controlButton" (click)="onButtonCLick()" src="{{ controlButtonimage }}" alt="controlButton">
+    <div class="progress mt-4">
+      <div class="progress-bar bg-dark" [ngStyle]="{'width': progress + '%'}" #progressBar>Time left: 00:30</div>
+    </div>
   </div>
   <div class="col-4">
     <div id="songs" class="text-center">

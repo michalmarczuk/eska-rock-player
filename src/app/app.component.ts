@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ISongs } from './app.interfaces';
@@ -10,6 +10,7 @@ import { ISongs } from './app.interfaces';
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('player') player: ElementRef<HTMLAudioElement>;
+  @ViewChild('progressBar') progressBar: ElementRef;
   // Consider moving it to another component
   private playIcon: string = '/assets/images/play.png';
   private stopIcon: string = '/assets/images/stop.png';
@@ -18,12 +19,17 @@ export class AppComponent implements OnInit, OnDestroy {
   controlButtonimage: string = this.playIcon;
   getSongsInterval: Subscription;
   songs: ISongs;
+  progress: number = 80;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private renderer: Renderer2) { }
 
   ngOnInit() {
     this.loadSongs();
     this.getSongsInterval = interval(15000).subscribe(() => this.loadSongs());
+  }
+
+  ngAfterViewInit() {
+    this.renderer.setProperty(this.progressBar.nativeElement, 'innerHTML', 'Test');
   }
 
   ngOnDestroy() {
