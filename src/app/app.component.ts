@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onButtonCLick() {
-    this.player.nativeElement.src = 'https://uk2-play.adtonos.com/8104/eska-rock';
+    this.player.nativeElement.src = 'https://ext03.ic.smcdn.pl/5380-1.aac';
     this.status = this.status === 'play' ? 'stop' : 'play';
     this.controlButtonimage = this.status === 'play' ? this.stopIcon : this.playIcon;
     this.player.nativeElement[this.status]();
