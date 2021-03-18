@@ -77,9 +77,27 @@ div {
     margin-left: 11px;
 }
 
+.pauseButton {
+    width: 75px;
+    height: 75px;
+    margin-top: 20px;
+    margin-left: 11px;
+}
+
 .controlsColumn {
     background-color: #eb1d24;
     height: 460px;
     margin-right: 30px;
     padding-left: 30px;
+}
+
+.progress {
+    width: 87%;
+    margin-left: 11px;
+}
+
+.progress-value {
+    position: absolute;
+    right: 105px;
+    top: 240px;
 }

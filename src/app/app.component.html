@@ -7,8 +7,10 @@
   <div class="col-3 justify-content-center controlsColumn">
     <img class="controlButton" (click)="onButtonCLick()" src="{{ controlButtonimage }}" alt="controlButton">
     <div class="progress mt-4">
-      <div class="progress-bar bg-dark" [ngStyle]="{'width': progress + '%'}" #progressBar>Time left: 00:30</div>
+      <div class="progress-bar bg-dark" [ngStyle]="{'width': progress + '%'}" #progressBar></div>
+      <div class="progress-value">{{ progressBarText }}</div>
     </div>
+    <img class="pauseButton" (click)="silentTest(180)" src="/assets/images/pause.png" alt="pause">
   </div>
   <div class="col-4">
     <div id="songs" class="text-center">
