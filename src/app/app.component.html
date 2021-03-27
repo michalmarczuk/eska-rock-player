@@ -10,7 +10,14 @@
       <div class="progress-bar bg-dark" [ngStyle]="{'width': progress + '%'}" #progressBar></div>
       <div class="progress-value">{{ progressBarText }}</div>
     </div>
+    <img class="pauseButton" (click)="silentTest(30)" src="/assets/images/pause.png" alt="pause">
+    <span class="pauseLabel">&#189; m</span>
+    <img class="pauseButton" (click)="silentTest(60)" src="/assets/images/pause.png" alt="pause">
+    <span class="pauseLabel">1 m</span>
     <img class="pauseButton" (click)="silentTest(180)" src="/assets/images/pause.png" alt="pause">
+    <span class="pauseLabel">3 m</span>
+    <img class="pauseButton" (click)="silentTest(300)" src="/assets/images/pause.png" alt="pause">
+    <span class="pauseLabel">5 m</span>
   </div>
   <div class="col-4">
     <div id="songs" class="text-center">
