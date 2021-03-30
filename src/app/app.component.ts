@@ -26,32 +26,28 @@ export class AppComponent implements OnInit, OnDestroy {
   progressBarText: string = '';
   progressBarInterval: Subscription;
 
-  silentButtonEnabled: boolean = false;
-  silentTimer: Subscription;
+  pauseButtonEnabled: boolean = false;
+  pauseTimer: Subscription;
 
-  constructor(private http: HttpClient, private renderer: Renderer2) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.loadSongs();
     this.getSongsInterval = interval(15000).subscribe(() => this.loadSongs());
   }
 
-  // ngAfterViewInit() {
-  //   this.renderer.setProperty(this.progressBar.nativeElement, 'innerHTML', 'Test');
-  // }
-
   ngOnDestroy() {
     this.getSongsInterval.unsubscribe();
   }
 
-  onButtonCLick() {
+  onCLickPlayStop() {
     this.player.nativeElement.src = 'https://uk2-play.adtonos.com/8104/eska-rock';
     this.status = this.status === 'play' ? 'pause' : 'play';
     this.controlButtonimage = this.status === 'play' ? this.stopIcon : this.playIcon;
     this.player.nativeElement[this.status]();
 
-    this.silentButtonEnabled = !this.silentButtonEnabled;
-    if (this.status === 'play' && this.silentTimer) this.silentTimer.unsubscribe();
+    this.pauseButtonEnabled = !this.pauseButtonEnabled;
+    if (this.status === 'play' && this.pauseTimer) this.pauseTimer.unsubscribe();
     if (this.status === 'play' && this.progressBarInterval) { 
       this.progressBarInterval.unsubscribe();
       this.progressBarText = '';
@@ -59,12 +55,12 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  silentTest(seconds: number) {
-    if (this.silentButtonEnabled) {
+  onClickPause(seconds: number) {
+    if (this.pauseButtonEnabled) {
       const interval: number = 1000;
-      this.onButtonCLick();
+      this.onCLickPlayStop();
 
-      this.silentTimer = timer(seconds * interval).subscribe(() => this.onButtonCLick());
+      this.pauseTimer = timer(seconds * interval).subscribe(() => this.onCLickPlayStop());
       this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
         this.progressBarText = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
         this.progress = x * 100 / seconds;
@@ -73,11 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private loadSongs() {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({'Content-Type': 'application/json',  accept: 'text/plain'}),
-    //   responseType: 'json'
-    // };
-
     this.http.get('http://localhost:4200/eska_api/combine.jsonp?callback=jsonp', {responseType: 'text'}).subscribe(data => {
       const songDetails = data.slice('jsonp('.length, -2);
 
