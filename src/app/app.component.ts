@@ -1,6 +1,7 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { interval, Subscription } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, Renderer2 } from '@angular/core';
+import { interval, timer, range, Subscription } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { ISongs } from './app.interfaces';
 
 @Component({
@@ -10,14 +11,23 @@ import { ISongs } from './app.interfaces';
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('player') player: ElementRef<HTMLAudioElement>;
+  @ViewChild('progressBar') progressBar: ElementRef;
+  title: string = 'eska-rock-player';
+  
   // Consider moving it to another component
   private playIcon: string = '/assets/images/play.png';
   private stopIcon: string = '/assets/images/stop.png';
-  title: string = 'eska-rock-player';
   status: string = 'pause';
   controlButtonimage: string = this.playIcon;
   getSongsInterval: Subscription;
   songs: ISongs;
+
+  progress: number = 0;
+  progressBarText: string = '';
+  progressBarInterval: Subscription;
+
+  pauseButtonEnabled: boolean = false;
+  pauseTimer: Subscription;
 
   constructor(private http: HttpClient) { }
 
@@ -30,19 +40,35 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getSongsInterval.unsubscribe();
   }
 
-  onButtonCLick() {
-    this.player.nativeElement.src = 'https://ext03.ic.smcdn.pl/5380-1.aac';
-    this.status = this.status === 'play' ? 'stop' : 'play';
+  onCLickPlayStop() {
+    this.player.nativeElement.src = 'https://uk2-play.adtonos.com/8104/eska-rock';
+    this.status = this.status === 'play' ? 'pause' : 'play';
     this.controlButtonimage = this.status === 'play' ? this.stopIcon : this.playIcon;
     this.player.nativeElement[this.status]();
+
+    this.pauseButtonEnabled = !this.pauseButtonEnabled;
+    if (this.status === 'play' && this.pauseTimer) this.pauseTimer.unsubscribe();
+    if (this.status === 'play' && this.progressBarInterval) { 
+      this.progressBarInterval.unsubscribe();
+      this.progressBarText = '';
+      this.progress = 0;
+    }
   }
 
-  loadSongs() {
-    const httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json',  accept: 'text/plain'}),
-      responseType: 'json'
-    };
+  onClickPause(seconds: number) {
+    if (this.pauseButtonEnabled) {
+      const interval: number = 1000;
+      this.onCLickPlayStop();
 
+      this.pauseTimer = timer(seconds * interval).subscribe(() => this.onCLickPlayStop());
+      this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
+        this.progressBarText = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
+        this.progress = x * 100 / seconds;
+      });
+    }
+  }
+
+  private loadSongs() {
     this.http.get('http://localhost:4200/eska_api/combine.jsonp?callback=jsonp', {responseType: 'text'}).subscribe(data => {
       const songDetails = data.slice('jsonp('.length, -2);
 
