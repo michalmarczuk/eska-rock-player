@@ -1,0 +1,17 @@
+.pauseButton {
+    width: 70px;
+    height: 70px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.pauseLabel {
+    font-family: 'Big Shoulders Display', cursive;
+    color: #000;
+    font-size: 1.2em;
+    margin-left: -20px;
+    border: 2px solid #000;
+    background-color: #eb1d24;
+    border-radius:50%;
+    padding: 5px;
+}

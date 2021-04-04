@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy, Renderer2 } from '@angular/core';
-import { interval, timer, range, Subscription } from 'rxjs';
+import { interval, timer, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ISongs } from './app.interfaces';

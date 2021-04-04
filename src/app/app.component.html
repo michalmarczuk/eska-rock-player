@@ -16,8 +16,9 @@
     <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">1 m</span>
     <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(180)" src="/assets/images/pause.png" alt="pause">
     <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">3 m</span>
-    <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(300)" src="/assets/images/pause.png" alt="pause">
-    <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">5 m</span>
+    <!-- <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(300)" src="/assets/images/pause.png" alt="pause">
+    <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">5 m</span> -->
+    <app-pause-button (playStop)="onCLickPlayStop()"></app-pause-button>
   </div>
   <div class="col-4">
     <div id="songs" class="text-center">
