@@ -21,6 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   controlButtonimage: string = this.playIcon;
   getSongsInterval: Subscription;
   songs: ISongs;
+  radioUrl: string;
 
   progress: number = 0;
   progressBarText: string = '';
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.http.get('http://localhost:4200/radio_url').subscribe(data => this.radioUrl = data['url']);
     this.loadSongs();
     this.getSongsInterval = interval(15000).subscribe(() => this.loadSongs());
   }
@@ -41,7 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onCLickPlayStop() {
-    this.player.nativeElement.src = 'https://uk2-play.adtonos.com/8104/eska-rock';
+    this.player.nativeElement.src = this.radioUrl;
     this.status = this.status === 'play' ? 'pause' : 'play';
     this.controlButtonimage = this.status === 'play' ? this.stopIcon : this.playIcon;
     this.player.nativeElement[this.status]();

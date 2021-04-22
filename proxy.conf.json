@@ -6,5 +6,13 @@
     "pathRewrite": {
       "^/eska_api": ""
     }
+  },
+  "/radio_url": {
+    "target": "https://ewznn85c64.execute-api.us-east-1.amazonaws.com/default/eska-rock",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/radio_url": ""
+    }
   }
 }
