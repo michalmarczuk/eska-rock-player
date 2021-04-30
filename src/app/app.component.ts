@@ -3,6 +3,7 @@ import { interval, timer, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ISongs } from './app.interfaces';
+import { PlayingStatus, Status } from './app.playingStatus.service';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   pauseButtonEnabled: boolean = false;
   pauseTimer: Subscription;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private playingStatus: PlayingStatus) { }
 
   ngOnInit() {
     this.loadSongs();
@@ -42,13 +43,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onCLickPlayStop() {
     this.player.nativeElement.src = 'https://uk2-play.adtonos.com/8104/eska-rock';
-    this.status = this.status === 'play' ? 'pause' : 'play';
-    this.controlButtonimage = this.status === 'play' ? this.stopIcon : this.playIcon;
-    this.player.nativeElement[this.status]();
+    this.playingStatus.toggle();
+    this.controlButtonimage = this.playingStatus.get() === Status.play ? this.stopIcon : this.playIcon;
+    this.player.nativeElement[Status[this.playingStatus.get()]]();
 
     this.pauseButtonEnabled = !this.pauseButtonEnabled;
-    if (this.status === 'play' && this.pauseTimer) this.pauseTimer.unsubscribe();
-    if (this.status === 'play' && this.progressBarInterval) { 
+    if (this.playingStatus.get() === Status.play && this.pauseTimer) this.pauseTimer.unsubscribe();
+    if (this.playingStatus.get() === Status.play && this.progressBarInterval) { 
       this.progressBarInterval.unsubscribe();
       this.progressBarText = '';
       this.progress = 0;
@@ -62,10 +63,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.pauseTimer = timer(seconds * interval).subscribe(() => this.onCLickPlayStop());
       this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
-        this.progressBarText = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
-        this.progress = x * 100 / seconds;
+        const text: string = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
+        const progress: number = x * 100 / seconds;
+        this.setProgressBarStatus({text, progress});
       });
     }
+  }
+
+  setProgressBarStatus(status: {text: string, progress: number}) {
+    this.progressBarText = status.text;
+    this.progress = status.progress;
   }
 
   private loadSongs() {

@@ -1,8 +1,9 @@
-import { Output } from '@angular/core';
+import { Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { interval, timer, range, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { PlayingStatus, Status } from 'src/app/app.playingStatus.service';
 
 @Component({
   selector: 'app-pause-button',
@@ -10,34 +11,32 @@ import { map, take } from 'rxjs/operators';
   styleUrls: ['./pause-button.component.css']
 })
 export class PauseButtonComponent implements OnInit {
-  @Output('playStop') playStop: EventEmitter<any> = new EventEmitter();
+  @Output('playStop') playStop: EventEmitter<void> = new EventEmitter();
+  @Output('progressBar') progressBar: EventEmitter<any> = new EventEmitter();
+  @Input() enabled: boolean;
 
-  pauseButtonEnabled: boolean = false;
   pauseTimer: Subscription;
 
   progress: number = 0;
   progressBarText: string = '';
   progressBarInterval: Subscription;
 
-  constructor() { }
+  constructor(private playingStatus: PlayingStatus) { }
 
   ngOnInit(): void {
   }
 
   onClickPause(seconds: number) {
-    console.log('pause Button clicked');
-    this.playStop.emit();
-
-    if (this.pauseButtonEnabled) {
+    if (this.enabled) {
       const interval: number = 1000;
-      // this.onCLickPlayStop();
       this.playStop.emit();
 
-      // this.pauseTimer = timer(seconds * interval).subscribe(() => this.onCLickPlayStop());
       this.pauseTimer = timer(seconds * interval).subscribe(() => this.playStop.emit());
       this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
-        this.progressBarText = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
-        this.progress = x * 100 / seconds;
+        const text: string = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
+        const progress: number = x * 100 / seconds;
+        console.log(progress);
+        this.progressBar.emit({text, progress});
       });
     }
   }
