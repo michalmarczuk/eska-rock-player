@@ -1,8 +1,8 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy, Renderer2 } from '@angular/core';
-import { interval, timer, range, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ISongs } from './app.interfaces';
+import { PlayingStatus, Status } from './app.playingStatus.service';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +11,11 @@ import { ISongs } from './app.interfaces';
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('player') player: ElementRef<HTMLAudioElement>;
-  @ViewChild('progressBar') progressBar: ElementRef;
   title: string = 'eska-rock-player';
   
   // Consider moving it to another component
   private playIcon: string = '/assets/images/play.png';
   private stopIcon: string = '/assets/images/stop.png';
-  status: string = 'pause';
   controlButtonimage: string = this.playIcon;
   getSongsInterval: Subscription;
   songs: ISongs;
@@ -25,48 +23,41 @@ export class AppComponent implements OnInit, OnDestroy {
 
   progress: number = 0;
   progressBarText: string = '';
-  progressBarInterval: Subscription;
 
-  pauseButtonEnabled: boolean = false;
-  pauseTimer: Subscription;
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private playingStatus: PlayingStatus) { }
 
   ngOnInit() {
     this.http.get('http://localhost:4200/radio_url').subscribe(data => this.radioUrl = data['url']);
     this.loadSongs();
     this.getSongsInterval = interval(15000).subscribe(() => this.loadSongs());
+
+    this.playingStatus.progressBar.subscribe((data) => {
+      this.progressBarText = data.progressBarText;
+      this.progress = data.progress;
+    });
+
+    this.playingStatus.radioStatus.subscribe((playingStatus) => {
+      this.player.nativeElement.src = this.radioUrl;
+      this.controlButtonimage = playingStatus === Status.play ? this.stopIcon : this.playIcon;
+      this.player.nativeElement[Status[playingStatus]]();
+
+      if (playingStatus === Status.play) { 
+        this.playingStatus.progressBarStop();
+      }
+    });
   }
 
   ngOnDestroy() {
     this.getSongsInterval.unsubscribe();
+    this.playingStatus.progressBar.unsubscribe();
+    this.playingStatus.radioStatus.unsubscribe();
   }
 
   onCLickPlayStop() {
-    this.player.nativeElement.src = this.radioUrl;
-    this.status = this.status === 'play' ? 'pause' : 'play';
-    this.controlButtonimage = this.status === 'play' ? this.stopIcon : this.playIcon;
-    this.player.nativeElement[this.status]();
-
-    this.pauseButtonEnabled = !this.pauseButtonEnabled;
-    if (this.status === 'play' && this.pauseTimer) this.pauseTimer.unsubscribe();
-    if (this.status === 'play' && this.progressBarInterval) { 
-      this.progressBarInterval.unsubscribe();
-      this.progressBarText = '';
-      this.progress = 0;
-    }
-  }
-
-  onClickPause(seconds: number) {
-    if (this.pauseButtonEnabled) {
-      const interval: number = 1000;
-      this.onCLickPlayStop();
-
-      this.pauseTimer = timer(seconds * interval).subscribe(() => this.onCLickPlayStop());
-      this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
-        this.progressBarText = `${Math.floor(x / 60).toString().padStart(2, '0')}:${(x % 60).toString().padStart(2, '0')}`;
-        this.progress = x * 100 / seconds;
-      });
+    if (this.controlButtonimage === this.playIcon) {
+      this.playingStatus.play();
+    } else {
+      this.playingStatus.pause();
     }
   }
 

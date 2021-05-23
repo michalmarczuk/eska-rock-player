@@ -10,14 +10,10 @@
       <div class="progress-bar bg-dark" [ngStyle]="{'width': progress + '%'}" #progressBar></div>
       <div class="progress-value">{{ progressBarText }}</div>
     </div>
-    <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(30)" src="/assets/images/pause.png" alt="pause">
-    <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">&#189; m</span>
-    <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(60)" src="/assets/images/pause.png" alt="pause">
-    <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">1 m</span>
-    <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(180)" src="/assets/images/pause.png" alt="pause">
-    <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">3 m</span>
-    <img class="pauseButton" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.2}" (click)="onClickPause(300)" src="/assets/images/pause.png" alt="pause">
-    <span class="pauseLabel" [ngStyle]="{'opacity': pauseButtonEnabled ? 1 : 0.1}">5 m</span>
+    <app-pause-button [seconds]="30" [label]="'&#189; m'"></app-pause-button>
+    <app-pause-button [seconds]="60" [label]="'1 m'"></app-pause-button>
+    <app-pause-button [seconds]="180" [label]="'3 m'"></app-pause-button>
+    <app-pause-button [seconds]="300" [label]="'5 m'"></app-pause-button>
   </div>
   <div class="col-4">
     <div id="songs" class="text-center">
