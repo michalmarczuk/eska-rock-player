@@ -1,2 +1,2 @@
-<img class="pauseButton" [ngStyle]="{'opacity': enabled ? 1 : 0.2}" (click)="onClickPause(300)" src="/assets/images/pause.png" alt="pause">
-<span class="pauseLabel" [ngStyle]="{'opacity': enabled ? 1 : 0.1}">5 m</span>
+<img class="pauseButton" [ngStyle]="{'opacity': enabled ? 1 : 0.2}" (click)="onClickPause()" src="/assets/images/pause.png" alt="pause">
+<span class="pauseLabel" [ngStyle]="{'opacity': enabled ? 1 : 0.1}">{{ label }}</span>
