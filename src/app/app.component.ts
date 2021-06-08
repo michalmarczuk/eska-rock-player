@@ -21,20 +21,12 @@ export class AppComponent implements OnInit, OnDestroy {
   songs: ISongs;
   radioUrl: string;
 
-  progress: number = 0;
-  progressBarText: string = '';
-
   constructor(private http: HttpClient, private playingStatus: PlayingStatus) { }
 
   ngOnInit() {
     this.http.get('http://localhost:4200/radio_url').subscribe(data => this.radioUrl = data['url']);
     this.loadSongs();
     this.getSongsInterval = interval(15000).subscribe(() => this.loadSongs());
-
-    this.playingStatus.progressBar.subscribe((data) => {
-      this.progressBarText = data.progressBarText;
-      this.progress = data.progress;
-    });
 
     this.playingStatus.radioStatus.subscribe((playingStatus) => {
       this.player.nativeElement.src = this.radioUrl;
@@ -49,7 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.getSongsInterval.unsubscribe();
-    this.playingStatus.progressBar.unsubscribe();
     this.playingStatus.radioStatus.unsubscribe();
   }
 

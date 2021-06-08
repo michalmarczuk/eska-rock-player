@@ -5,11 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { PauseButtonComponent } from './controlComponents/pause-button/pause-button.component';
 import { PlayingStatus } from './app.playingStatus.service';
+import { ProgressBarComponent } from './controlComponents/progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PauseButtonComponent
+    PauseButtonComponent,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
