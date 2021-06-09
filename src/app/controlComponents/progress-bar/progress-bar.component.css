@@ -1,0 +1,15 @@
+.progress {
+    width: 87%;
+    margin-left: 11px;
+}
+
+.progress-value {
+    position: absolute;
+    right: 105px;
+    top: 240px;
+}
+
+div {
+    background-color: #221f20;
+    color: #fff;
+}
