@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { Input, OnDestroy } from '@angular/core';
 import { Component } from '@angular/core';
 import { PlayingStatus, Status } from 'src/app/app.playingStatus.service';
 
@@ -7,7 +7,7 @@ import { PlayingStatus, Status } from 'src/app/app.playingStatus.service';
   templateUrl: './pause-button.component.html',
   styleUrls: ['./pause-button.component.css']
 })
-export class PauseButtonComponent {
+export class PauseButtonComponent implements OnDestroy {
   @Input() seconds: number;
   @Input() label: string;
   enabled: boolean;
@@ -18,10 +18,11 @@ export class PauseButtonComponent {
     });
   }
 
+  ngOnDestroy() {
+    this.playingStatus.radioStatus.unsubscribe();
+  }
+
   onClickPause() {
-    if (this.enabled) {
-      this.playingStatus.pause();
-      this.playingStatus.progressBarStart(this.seconds);
-    }
+    if (this.enabled) this.playingStatus.pause(this.seconds);
   }
 }

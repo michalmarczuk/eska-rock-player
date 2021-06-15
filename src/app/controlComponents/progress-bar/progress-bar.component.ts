@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PlayingStatus } from 'src/app/app.playingStatus.service';
+import { PlayingStatus, Status } from 'src/app/app.playingStatus.service';
 
 @Component({
   selector: 'app-progress-bar',
