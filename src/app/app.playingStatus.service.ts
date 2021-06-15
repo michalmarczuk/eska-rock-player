@@ -5,11 +5,12 @@ import { map, take } from 'rxjs/operators';
 
 @Injectable()
 export class PlayingStatus {
+    public progressBar: Subject<IProgressBar>;
+    public radioStatus: Subject<Status>;
+
     private progressBarInterval: Subscription;
     private progressBarTimer: Subscription;
-    public progressBar: Subject<IProgressBar>;
     private status: Status;
-    public radioStatus: Subject<Status>;
 
     constructor() {
         this.status = Status.pause;
@@ -17,7 +18,25 @@ export class PlayingStatus {
         this.radioStatus = new Subject<Status>();
     }
 
-    progressBarStop() {
+    play() {
+        this.status = Status.play;
+        this.radioStatus.next(this.status);
+
+        this.progressBarStop();
+    }
+
+    pause(seconds: number) {
+        this.status = Status.pause;
+        this.radioStatus.next(this.status);
+        this.progressBarStart(seconds);
+    }
+
+    stop() {
+        this.status = Status.pause;
+        this.radioStatus.next(this.status);
+    }
+
+    private progressBarStop() {
         if (this.progressBarInterval) {
             this.progressBarInterval.unsubscribe();
             this.progressBarTimer.unsubscribe();
@@ -26,7 +45,7 @@ export class PlayingStatus {
         this.progressBar.next({progress: 0, progressBarText: ''});
     }
 
-    progressBarStart(seconds: number) {
+    private progressBarStart(seconds: number) {
         const interval = 1000;
         
         this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
@@ -36,17 +55,10 @@ export class PlayingStatus {
             this.progressBar.next({progress, progressBarText: text});
         });
 
-        this.progressBarTimer = timer(seconds * interval).subscribe(() => this.radioStatus.next(Status.play));
-    }
-
-    play() {
-        this.status = Status.play;
-        this.radioStatus.next(this.status);
-    }
-
-    pause() {
-        this.status = Status.pause;
-        this.radioStatus.next(this.status);
+        this.progressBarTimer = timer(seconds * interval).subscribe(() => {
+            this.radioStatus.next(Status.play);
+            this.progressBarStop();
+        });
     }
 }
 

@@ -32,10 +32,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.player.nativeElement.src = this.radioUrl;
       this.controlButtonimage = playingStatus === Status.play ? this.stopIcon : this.playIcon;
       this.player.nativeElement[Status[playingStatus]]();
-
-      if (playingStatus === Status.play) { 
-        this.playingStatus.progressBarStop();
-      }
     });
   }
 
@@ -48,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.controlButtonimage === this.playIcon) {
       this.playingStatus.play();
     } else {
-      this.playingStatus.pause();
+      this.playingStatus.stop();
     }
   }
 
