@@ -5,7 +5,7 @@
 
 <div class="row align-items-bottom appContainer">
   <div class="col-3 justify-content-center controlsColumn">
-    <img class="controlButton" (click)="onCLickPlayStop()" src="{{ controlButtonimage }}" alt="controlButton">
+    <app-start-stop-button></app-start-stop-button>
     <app-progress-bar></app-progress-bar>
     <app-pause-button [seconds]="30" [label]="'&#189; m'"></app-pause-button>
     <app-pause-button [seconds]="60" [label]="'1 m'"></app-pause-button>
