@@ -12,11 +12,6 @@ import { PlayingStatus, Status } from './app.playingStatus.service';
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('player') player: ElementRef<HTMLAudioElement>;
   title: string = 'eska-rock-player';
-  
-  // Consider moving it to another component
-  private playIcon: string = '/assets/images/play.png';
-  private stopIcon: string = '/assets/images/stop.png';
-  controlButtonimage: string = this.playIcon;
   getSongsInterval: Subscription;
   songs: ISongs;
   radioUrl: string;
@@ -30,7 +25,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.playingStatus.radioStatus.subscribe((playingStatus) => {
       this.player.nativeElement.src = this.radioUrl;
-      this.controlButtonimage = playingStatus === Status.play ? this.stopIcon : this.playIcon;
       this.player.nativeElement[Status[playingStatus]]();
     });
   }
@@ -38,14 +32,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.getSongsInterval.unsubscribe();
     this.playingStatus.radioStatus.unsubscribe();
-  }
-
-  onCLickPlayStop() {
-    if (this.controlButtonimage === this.playIcon) {
-      this.playingStatus.play();
-    } else {
-      this.playingStatus.stop();
-    }
   }
 
   private loadSongs() {
