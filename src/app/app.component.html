@@ -3,7 +3,7 @@
   <!-- <source src="https://uk2-play.adtonos.com/8104/eska-rock" type='audio/wav' /> -->
 </audio>
 
-<div class="row align-items-bottom appContainer">
+<div *ngIf="songs != undefined" class="row align-items-bottom appContainer">
   <div class="col-3 justify-content-center controlsColumn">
     <app-start-stop-button></app-start-stop-button>
     <app-progress-bar></app-progress-bar>

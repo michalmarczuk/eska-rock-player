@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { timer, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { IProgressBar } from "./app.interfaces";
 
 @Injectable()
 export class PlayingStatus {
@@ -18,25 +19,26 @@ export class PlayingStatus {
         this.radioStatus = new Subject<Status>();
     }
 
-    play() {
+    public play(): void {
         this.status = Status.play;
         this.radioStatus.next(this.status);
 
         this.progressBarStop();
     }
 
-    pause(seconds: number) {
+    public pause(seconds: number): void {
         this.status = Status.pause;
         this.radioStatus.next(this.status);
+
         this.progressBarStart(seconds);
     }
 
-    stop() {
+    public stop(): void {
         this.status = Status.pause;
         this.radioStatus.next(this.status);
     }
 
-    private progressBarStop() {
+    private progressBarStop(): void {
         if (this.progressBarInterval) {
             this.progressBarInterval.unsubscribe();
             this.progressBarTimer.unsubscribe();
@@ -45,7 +47,7 @@ export class PlayingStatus {
         this.progressBar.next({progress: 0, progressBarText: ''});
     }
 
-    private progressBarStart(seconds: number) {
+    private progressBarStart(seconds: number): void {
         const interval = 1000;
         
         this.progressBarInterval = timer(seconds, interval).pipe(map((i) => seconds - i)).pipe(take(seconds)).subscribe((x) => {
@@ -60,11 +62,6 @@ export class PlayingStatus {
             this.progressBarStop();
         });
     }
-}
-
-export interface IProgressBar {
-    progress: number,
-    progressBarText: string
 }
 
 export enum Status {

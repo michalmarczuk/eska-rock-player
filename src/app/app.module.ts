@@ -7,6 +7,7 @@ import { PauseButtonComponent } from './controlComponents/pause-button/pause-but
 import { PlayingStatus } from './app.playingStatus.service';
 import { ProgressBarComponent } from './controlComponents/progress-bar/progress-bar.component';
 import { StartStopButtonComponent } from './controlComponents/start-stop-button/start-stop-button.component';
+import { Songs } from './app.songs.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,10 @@ import { StartStopButtonComponent } from './controlComponents/start-stop-button/
     BrowserModule,
     HttpClientModule
   ],
-  providers: [PlayingStatus],
+  providers: [
+    PlayingStatus,
+    Songs
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,12 +1,15 @@
+export interface ISong {
+    image: string,
+    artist: string,
+    song: string
+}
+
 export interface ISongs {
-    current: {
-        image: string;
-        artist: string;
-        song: string;
-    },
-    last: {
-        image: string;
-        artist: string;
-        song: string;
-    }
+    current: ISong,
+    last: ISong
+}
+
+export interface IProgressBar {
+    progress: number,
+    progressBarText: string
 }
